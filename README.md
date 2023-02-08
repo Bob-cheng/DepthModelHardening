@@ -10,6 +10,7 @@ This is the official PyTorch implementation of our paper *Adversarial Training o
 
 1. [Requirements and Installation](#Requirements-and-Installation)
 2. [Getting Started](#Getting-Started)
+3. [Citation](#Citation)
 
 
 
