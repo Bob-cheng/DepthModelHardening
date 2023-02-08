@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "~/data/projects/DepthHardening/adversarial-attacks-pytorch"
+    ]
+}

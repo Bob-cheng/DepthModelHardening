@@ -1,0 +1,5 @@
+/home/cheng443/data/depth_atk/videos/10-01-2021/IMG_3604
+/home/cheng443/data/depth_atk/videos/10-01-2021/IMG_3606
+
+CUDA_VISIBLE_DEVICES=3 python evaluate_depth.py --load_weights_folder /data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_SupOnly_lre-5/models/weights_2 --width 1024 --height 320 --eval_stereo --data_path /data3/share/kitti/kitti_data/ --png
+CUDA_VISIBLE_DEVICES=4 python train.py --model_name stereo_advTrain_l0_v2_f0adv_0aug_Ori_halfADV_lre-5  --frame_ids 0 --use_stereo --split eigen_full --png --data_path /data3/share/kitti/kitti_data/  --width 1024 --height 320 --learning_rate 0.00001 --log_dir /data3/user/cheng443/model_harden/tmp/training  --fine_tune --adv_train --norm_type l_0 --num_workers 4 --batch_size 32 --half_no_synthesis  

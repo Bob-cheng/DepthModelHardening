@@ -1,0 +1,112 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "train.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "args": 
+            ["--model_name", "stereo_advTrain_l0_v2_f0adv_0aug_Ori_halfADV_lre-5", "--frame_ids", "0", "--use_stereo", 
+                "--split", "eigen_full", "--png", "--data_path", "/data3/share/kitti/kitti_data/", 
+                "--width", "1024", "--height", "320", "--learning_rate", "0.00001",
+                "--log_dir", "/data3/user/cheng443/model_harden/tmp/training", "--fine_tune", "--adv_train", "--norm_type", "l_0",
+                "--num_workers", "8", "--batch_size", "32", "--half_no_synthesis"
+            ], // l0 training with contrastive learning // stereo_advTrain_l0_v2_f0adv_0aug_contrasOnly_lre-5
+            // ["--model_name", "stereo_advTrain_pgd_sup_1024_320_f0adv_0aug_lre-5_b32_t3", "--frame_ids", "0", "--use_stereo", 
+            //     "--split", "eigen_full", "--png", "--data_path", "/data3/share/kitti/kitti_data/", 
+            //     "--width", "1024", "--height", "320", "--learning_rate", "0.00001",
+            //     "--log_dir", "~/data/model_harden/tmp/training", "--fine_tune", "--adv_train", "--norm_type", "l_inf",
+            //     "--num_workers", "8", "--batch_size", "32", "--supervised_adv", "--contrastive_learning"
+            // ], // pgd training with baseline supervised
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "4"}
+        },
+        // CUDA_VISIBLE_DEVICES=3 nohup python train.py --model_name stereo_advTrain_l0_1024_320_lr1e-4 --frame_ids 0 --use_stereo --split eigen_full --png --data_path /home/dongfang/Downloads/kitti/kitti_data --width 1024 --height 320 --learning_rate 0.0001 --log_dir /home/dongfang/Downloads/tmp/training --fine_tune --adv_train --norm_type l_0  > ./current_train.txt 2>&1   &
+        // CUDA_VISIBLE_DEVICES=3 python train.py --model_name stereo_advTrain_l0_1024_320_lr1e-4 --frame_ids 0 --use_stereo --split eigen_full --png --data_path /home/dongfang/Downloads/kitti/kitti_data --width 1024 --height 320 --learning_rate 0.0001 --log_dir /home/dongfang/Downloads/tmp/training --fine_tune --adv_train --norm_type l_0
+        // CUDA_VISIBLE_DEVICES=1 python train.py --model_name manyd_stereo_advTrain_l0_v2_f0adv_0aug_Ori_halfADV_bencomp --frame_ids 0 --use_stereo --split eigen_full --png --data_path /data3/share/kitti/kitti_data/ --width 1024 --height 320 --learning_rate 0.00001 --log_dir /data3/user/cheng443/model_harden/tmp/training --fine_tune --adv_train --norm_type l_0 --num_workers 8 --batch_size 32  --half_no_synthesis
+        {
+            "name": "evaluate_depth",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evaluate_depth.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--load_weights_folder",  "/data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_Ori_halfADV_lre-5/models/weights_11",
+                // "/data3/user/cheng443/model_harden/tmp/training/mono_original",
+                // "/home/cheng443/data/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_Ori_scratch_lre-5/models/weights_19", 
+                // "--load_weights_folder","/home/jcl3689/zhiyuan/tmp/training/model_harden_log/Dec07_17-54-19_obj_l0/models/weights_7", //Simple adv train
+                // "--load_weights_folder","/home/jcl3689/zhiyuan/DepthModelHardening/DepthNetworks/monodepth2/models/mono+stereo_1024x320", //Original Model
+                "--width", "1024", "--height", "320",
+                 "--eval_stereo", "--data_path", "/data3/share/kitti/kitti_data/", "--png"],
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "3"}
+        }
+        //CUDA_VISIBLE_DEVICES=3 python evaluate_depth.py --load_weights_folder /data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_Ori_halfADV_bencomp/models/weights_2 --width 1024 --height 320 --eval_stereo --data_path /data3/share/kitti/kitti_data/ --png
+        ,
+        {
+            "name": "crosscheck_evaluate_depth",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evaluate_depth_crosscheck.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "5"}
+        }
+        ,
+        {
+            "name": "object_evaluate_depth",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evaluate_depth_objects.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "5"}
+        }
+        ,
+        {
+            "name": "steps_evaluate_depth",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evaluate_depth_atkSteps.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "5"}
+        }
+        ,
+        {
+            "name": "physical_evaluate_depth",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evaluate_depth_physical.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--load_weights_folder",  
+                // "/data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_lre-5/models/weights_2",
+                "/data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_Ori_halfADV_lre-5/models/weights_11",
+                // "/data3/user/cheng443/model_harden/tmp/training/mono_original",
+                // "/data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_Ori+5-31-2_lre-5/models/weights_2",
+                // "/home/cheng443/data/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_lre-5/models/weights_2", "/data3/user/cheng443/model_harden/tmp/training/mono_original"
+                // "--load_weights_folder","/home/jcl3689/zhiyuan/tmp/training/model_harden_log/Dec07_17-54-19_obj_l0/models/weights_7", //Simple adv train
+                // "--load_weights_folder","/home/jcl3689/zhiyuan/DepthModelHardening/DepthNetworks/monodepth2/models/mono+stereo_1024x320", //Original Model
+                "--width", "1024", "--height", "320",
+                 "--eval_stereo", "--data_path", "/data3/share/kitti/kitti_data/", "--png"],
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "3"}
+        }
+        //python evaluate_depth_physical.py --load_weights_folder /data3/user/cheng443/model_harden/tmp/training/stereo_advTrain_l0_v2_f0adv_0aug_lre-5/models/weights_2 --width 1024 --height 320 --eval_stereo  --data_path /data3/share/kitti/kitti_data/ --png
+    ]
+}

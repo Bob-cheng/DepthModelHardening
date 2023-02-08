@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "train.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "args": 
+            ["--model_name", "DH_stereo_advTrain_l0_v2_f0adv_0aug_SupOnly_lre-5", "--frame_ids", "0", "--use_stereo", 
+                "--split", "eigen_full", "--png", "--data_path", "/data3/share/kitti/kitti_data/", 
+                "--width", "1024", "--height", "320", "--learning_rate", "0.00001",
+                "--log_dir", "~/data/model_harden/tmp/training", "--fine_tune", "--adv_train", "--norm_type", "l_0",
+                "--num_workers", "8", "--batch_size", "32","--supervised_adv"
+                // "--use_depth_hints", "--depth_hint_path", "/data3/user/cheng443/kitti/kitti_data/depth_hints/"
+            ], // l0 training with contrastive learning //"DH_stereo_advTrain_l0_1024_320_f0adv_0aug_contrasW01_lre-5"
+            // ["--model_name", "DH_stereo_advTrain_pgd_sup_f0adv_0aug_lre-5_b32", "--frame_ids", "0", "--use_stereo", 
+            //     "--split", "eigen_full", "--png", "--data_path", "/data3/share/kitti/kitti_data/", 
+            //     "--width", "1024", "--height", "320", "--learning_rate", "0.00001",
+            //     "--log_dir", "~/data/model_harden/tmp/training", "--fine_tune", "--adv_train", "--norm_type", "l_inf",
+            //     "--num_workers", "16", "--batch_size", "32", "--supervised_adv", 
+            //     // "--use_depth_hints", "--depth_hint_path", "/data3/user/cheng443/kitti/kitti_data/depth_hints/"
+            // ], // pgd training with baseline supervised
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "4"}
+        },
+        // CUDA_VISIBLE_DEVICES=3 nohup python train.py --model_name stereo_advTrain_l0_1024_320_lr1e-4 --frame_ids 0 --use_stereo --split eigen_full --png --data_path /home/dongfang/Downloads/kitti/kitti_data --width 1024 --height 320 --learning_rate 0.0001 --log_dir /home/dongfang/Downloads/tmp/training --fine_tune --adv_train --norm_type l_0  > ./current_train.txt 2>&1   &
+        // CUDA_VISIBLE_DEVICES=3 python train.py --model_name stereo_advTrain_l0_1024_320_lr1e-4 --frame_ids 0 --use_stereo --split eigen_full --png --data_path /home/dongfang/Downloads/kitti/kitti_data --width 1024 --height 320 --learning_rate 0.0001 --log_dir /home/dongfang/Downloads/tmp/training --fine_tune --adv_train --norm_type l_0
+        {
+            "name": "evaluate_depth",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evaluate_depth.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--load_weights_folder",  "~/data/model_harden/tmp/training/DH_stereo_advTrain_l0_v2_f0adv_0aug_SupOnly_lre-5/models/weights_3", 
+                // "--load_weights_folder","/home/jcl3689/zhiyuan/tmp/training/model_harden_log/Dec07_17-54-19_obj_l0/models/weights_7", //Simple adv train
+                // "--load_weights_folder","/home/jcl3689/zhiyuan/DepthModelHardening/DepthNetworks/monodepth2/models/mono+stereo_1024x320", //Original Model
+                "--width", "1024", "--height", "320",
+                 "--eval_stereo", "--data_path", "/data3/share/kitti/kitti_data/", "--png"],
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {"CUDA_VISIBLE_DEVICES": "3"}
+        }
+        //CUDA_VISIBLE_DEVICES=2 python evaluate_depth.py --load_weights_folder /home/dongfang/Downloads/tmp/training/stereo_advTrain_l0_1024_320_lr1e-5/models/weights_0 --width 1024 --height 320 --eval_stereo --data_path ~/Downloads/kitti/kitti_data/ --png
+    ]
+}
